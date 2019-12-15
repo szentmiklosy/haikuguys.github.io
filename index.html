@@ -1,0 +1,106 @@
+<html>
+  <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
+  <style>
+    #body {
+      font-family: 'Lora', serif;
+    }
+
+    #madlib {
+      width: 800px;
+      line-height: 2.5em;
+      margin: 200px auto;
+    }
+
+    #madlib > * {
+      font-size: 1.2em;
+      color: #fff;
+    }
+
+    .madlib-input {
+      font-family: 'Lora', serif;
+      outline: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-bottom: 2px dashed;
+      border-color: #fff;
+      background-color: transparent;
+      caret-color: #fff;
+    }
+
+    .madlib-input:focus {
+      border-bottom: 2px solid;
+      border-color: #fff;
+    }
+  </style>
+  <body id='body'>
+    <form id="madlib" action="https://formspree.io/xoqvggor" method="POST">
+      <input type="text" name="name">
+      <input type="email" name="_replyto">
+      <input type="submit" value="Send">
+    </form>
+  </body>
+  <script>
+    const madlibs = {
+      "wolf": "There was ________________________ everywhere.  It was a nightmare.  I don’t know why ____________ even thought it was a good idea to bring _____________ in the first place.  I mean, my first thought was ___________________________ but after a few minutes, I noticed the ____________ wasn’t going to _________ the way we thought it would.  And that’s why you don’t bring _________ to a ___________________.",
+      "turtle": "Yeah, well if __________ had showed up on time for us to leave for the ____________ we wouldn’t have had to __________________ so many times on the way there.  I mean, it’s fine.  At least we got to talk about ______________ for a few hours while sitting in traffic.  All this time I had no idea that _________________ was so into _______________. By the time we got there I couldn’t stop thinking about all the times (s)he was probably _______________ while I  was sleeping.",
+      "bear": "OMG, did you hear about how _______________ went to the ____________ and ______ with the ____________ for like an entire hour?  WTF is up with that?  Do you remember the last time s/he ________________________ with all those _____________?  This reminds me of that and I’ve been waiting to tell you for a week. If I didn't encounter a ____________ immediately after I found out, I would have come over that night with some __________ so we could gossip and _________________ before tweeting about it."
+    }
+
+    const colors = [
+      '#f29191',
+      '#f2ab91',
+      '#fcb45b',
+      '#fcf8a4',
+      '#4196ab',
+      '#45388f',
+      '#8f386c',
+      '#782929',
+      '#03b1fc',
+      '#acd69f'
+    ]
+
+    const madlibIds = Object.keys(madlibs)
+
+    const state = {
+      madlibIndex: 0,
+      colorIndex: 0
+    }
+
+    function setBgColor () {
+      const bodyEl = document.getElementById('body')
+      bodyEl.style.backgroundColor = colors[state.colorIndex++]
+    }
+
+    // function getN
+
+    function loadMadlibElement () {
+      setBgColor()
+      const formEl = document.getElementById('madlib')
+
+      while (formEl.firstChild) {
+        formEl.removeChild(formEl.firstChild)
+      }
+
+      const splitted = madlibs[madlibIds[state.madlibIndex]]
+        .split(/_+/g)
+
+      for (let i = 0; i < splitted.length; i++) {
+        const textEl = document.createElement('span')
+        textEl.innerHTML = splitted[i]
+        formEl.appendChild(textEl)
+
+        if (i < splitted.length - 1) {
+          const inputEl = document.createElement('input')
+          inputEl.classList.add('madlib-input')
+          inputEl.name = String(i)
+          formEl.appendChild(inputEl)
+
+          if (i === 0) inputEl.focus()
+        }
+      }
+    }
+
+    loadMadlibElement()
+  </script>
+</html>
