@@ -1,39 +1,6 @@
 <!DOCTYPE html>
 <html>
   <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
-  <style>
-    #body {
-      font-family: 'Lora', serif;
-    }
-
-    #madlib {
-      width: 800px;
-      line-height: 2.5em;
-      margin: 200px auto;
-    }
-
-    #madlib > * {
-      font-size: 1.2em;
-      color: #fff;
-    }
-
-    .madlib-input {
-      font-family: 'Lora', serif;
-      outline: none;
-      border-top: none;
-      border-left: none;
-      border-right: none;
-      border-bottom: 2px dashed;
-      border-color: #fff;
-      background-color: transparent;
-      caret-color: #fff;
-    }
-
-    .madlib-input:focus {
-      border-bottom: 2px solid;
-      border-color: #fff;
-    }
-  </style>
   <body id='body'>
     <form id="madlib" action="https://formspree.io/xoqvggor" method="POST">
       <input type="text" name="name">
@@ -73,17 +40,27 @@
       bodyEl.style.backgroundColor = colors[state.colorIndex++]
     }
 
-    // function getN
+    function getTitleElement (title) {
+      const titleEl = document.createElement('div')
+      titleEl.innerHTML = title
+      titleEl.id = 'madlib-title'
+      console.log(`--------------------- title:`, title)
+      return titleEl
+    }
 
     function loadMadlibElement () {
       setBgColor()
       const formEl = document.getElementById('madlib')
+      const madlibId = madlibIds[state.madlibIndex]
 
       while (formEl.firstChild) {
         formEl.removeChild(formEl.firstChild)
       }
 
-      const splitted = madlibs[madlibIds[state.madlibIndex]]
+      const titleEl = getTitleElement(madlibId)
+      formEl.appendChild(titleEl)
+
+      const splitted = madlibs[madlibId]
         .split(/_+/g)
 
       for (let i = 0; i < splitted.length; i++) {
@@ -104,4 +81,42 @@
 
     loadMadlibElement()
   </script>
+  <style>
+    #body {
+      font-family: 'Lora', serif;
+    }
+
+    #madlib {
+      width: 800px;
+      line-height: 2.5em;
+      margin: 200px auto;
+    }
+
+    #madlib > * {
+      font-size: 1.2em;
+      color: #fff;
+    }
+
+    #madlib-title {
+      font-size: 3em;
+      line-height: 2em;
+    }
+
+    .madlib-input {
+      font-family: 'Lora', serif;
+      outline: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-bottom: 2px dashed;
+      border-color: #fff;
+      background-color: transparent;
+      caret-color: #fff;
+    }
+
+    .madlib-input:focus {
+      border-bottom: 2px solid;
+      border-color: #fff;
+    }
+  </style>
 </html>
