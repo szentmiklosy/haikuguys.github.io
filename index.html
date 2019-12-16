@@ -101,7 +101,14 @@
       <span id='madlib-title'></span>
       <div class='madlib-arrow' id='madlib-arrow-right' onclick="goToNextMadlib()"></div>
     </div>
-    <form id="madlib" class='centered page-1' action="https://formspree.io/xoqvggor" method="POST"></form>
+    <form class='centered page-1' action="https://formspree.io/xoqvggor" method="POST">
+      <div id="madlib" />
+      <div>
+        <div><span>From:</span><input class='madlib-input' /></div>
+        <div><span>To:</span><input class='madlib-input' /></div>
+      </div>
+    </div>
+    </form>
     <div>
 
     </div>
@@ -166,11 +173,13 @@
 
     function setLeftArrow () {
       const el = document.getElementById('madlib-arrow-left')
+      console.log(`--------------------- el left:`, el)
       el.style.display = state.madlibIndex > 0 ? 'initial' : 'none'
     }
 
     function setRightArrow () {
       const el = document.getElementById('madlib-arrow-right')
+      console.log(`--------------------- el right:`, el)
       el.style.display = state.madlibIndex < madlibIds.length - 1 ? 'initial' : 'none'
     }
 
@@ -230,7 +239,7 @@
       }
     }
 
-    loadMadlibElement()
     setPageIndex(1)
+    loadMadlibElement()
   </script>
 </html>
