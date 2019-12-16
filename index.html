@@ -15,14 +15,13 @@
       line-height: 2.5em;
     }
 
-    #madlib > * {
+    #madlib-container > * {
       font-size: 1.2em;
       color: #fff;
     }
 
     #madlib-header {
-      margin-top: 150px;
-      /* position: relative; */
+      margin-top: 100px;
     }
 
     #madlib-title {
@@ -34,6 +33,9 @@
 
     .madlib-input {
       font-family: 'Lora', serif;
+      font-size: 1em;
+      color: #fff;
+
       outline: none;
       border-top: none;
       border-left: none;
@@ -88,6 +90,16 @@
   		width: 200%;
   		height: 200%;
   	}
+
+    .madlib-from-to {
+      margin-top: 40px;
+      line-height: 2em;
+    }
+
+    .madlib-from-to-label {
+      width: 60px;
+      display: inline-block;
+    }
   </style>
   <body id='body'>
     <div class='centered page-0'>
@@ -101,11 +113,11 @@
       <span id='madlib-title'></span>
       <div class='madlib-arrow' id='madlib-arrow-right' onclick="goToNextMadlib()"></div>
     </div>
-    <form class='centered page-1' action="https://formspree.io/xoqvggor" method="POST">
-      <div id="madlib" />
-      <div>
-        <div><span>From:</span><input class='madlib-input' /></div>
-        <div><span>To:</span><input class='madlib-input' /></div>
+    <form id="madlib-container" class='centered page-1' action="https://formspree.io/xoqvggor" method="POST">
+      <div id="madlib"></div>
+      <div class='madlib-from-to'>
+        <div><div class='madlib-from-to-label'>From:</div><input class='madlib-input' /></div>
+        <div><div class='madlib-from-to-label'>To:</div><input class='madlib-input' /></div>
       </div>
     </div>
     </form>
