@@ -1,95 +1,6 @@
 <!DOCTYPE html>
 <html>
   <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
-  <body id='body'>
-    <form id="madlib" action="https://formspree.io/xoqvggor" method="POST">
-      <input type="text" name="name">
-      <input type="email" name="_replyto">
-      <input type="submit" value="Send">
-    </form>
-  </body>
-  <script>
-    const madlibs = {
-      "A Total Mess": "There was ________________________ everywhere.  It was a nightmare.  I don’t know why ____________ even thought it was a good idea to bring _____________ in the first place.  I mean, my first thought was ___________________________ but after a few minutes, I noticed the ____________ wasn’t going to _________ the way we thought it would.  And that’s why you don’t bring _________ to a ___________________.",
-      "Never On Time": "Yeah, well if __________ had showed up on time for us to leave for the ____________ we wouldn’t have had to __________________ so many times on the way there.  I mean, it’s fine.  At least we got to talk about ______________ for a few hours while sitting in traffic.  All this time I had no idea that _________________ was so into _______________. By the time we got there I couldn’t stop thinking about all the times (s)he was probably _______________ while I  was sleeping.",
-      "My Friend is Ridiculous": "OMG, did you hear about how _______________ went to the ____________ and ______ with the ____________ for like an entire hour?  WTF is up with that?  Do you remember the last time s/he ________________________ with all those _____________?  This reminds me of that and I’ve been waiting to tell you for a week. If I didn't encounter a ____________ immediately after I found out, I would have come over that night with some __________ so we could gossip and _________________ before tweeting about it.",
-      "So Annoying": "With __________ , it’s always sort of a _____________ and I just can’t get over it. The past few days have been kind of ___________________ but the _________ is making it a little better.",
-      "Lost in Translation": "So the other day I sent a text to _____________ and instead of rainbows and sunshine, he/she responded all ____________ . It was kind of weird. Instead of letting it get to me, I put my shoes on and ____________________ . It helped for a little until I ran into a ________________ holding a _______________ and wielding it with fury.",
-      "The Adventure": "It was perfect. All my life ___________ and I talked about going to _____________ . After weeks of planning, we packed a _____________ , a ________________ , and a ______________ then hit the road. The mountains were lined with colorful ____________ and seemingly limitless ___________ . At one of the rest stops, there was a ___________ selling ____________ , which actually came in pretty handy over the next few days every time we needed to _______________ the _______________ .",
-      "Best of Times": "My favorite moment with ___________ was when we _________________________ together. Every time I remember the way (s)he __________________ with the _______________ , it makes me feel ____________ inside. Since then, our dynamic has become ____________ and when our friends talk about us they say things like \”oh! __________ and __________ , they are like when _________________ and _____________ combine.",
-      "Ugh, That Balloon": "There’s an old balloon stuck in a tree outside our window. I’m pretty sure it says _____________ . It must be from that time when a group of _______________ came stampeding down the street shouting __________________ at like 7AM for no good reason. You should have seen the way _____________ reacted by throwing all of our _______________ out the window at them.",
-      "Can't Even": "_________________ can sometimes be a little ______________ . It’s not really that big of a deal though, because the way he/she ___________’s totally makes up for it. We were together a few _________ ago and forgot to ___________ the _____________ . We had to explain ourselves to ______________ and it became a ___________ . That was the last time we ever ______________ and I’m kind of okay with it.",
-      "Had a Good Time": "Okay, so this one time, __________ and I went to the ______________ . It was literally the best time ever. The first thing we did when we got there was ______________ . It was SO ___________ that we decided to _____________ for the rest of the time and not even look around more. The rest of the night was ____________ because I couldn’t handle all the ______________ . We only talk about it every now and then."
-      "Friendly Competition": "It’s okay when ______________ does ________________ but I can do it better. Everyone agrees. For example, we were at the _________________ talking to ______________ and a __________ walked in. When this happened, ______________  didn’t even ____________ . Shouldn't it be obvious?",
-      "Quit It": "How many times do I have to tell you, ________________ , to please never _____________ again? I’ve written you several letters over the past few _______________ explaining that when you ____________ in regularity, ______________ happens. Diid you not receive them? Or did you ______________ them instead with that ____________ I got you for your birthday last year?"
-    }
-
-    const colors = [
-      '#f29191',
-      '#f2ab91',
-      '#fcb45b',
-      '#fcf8a4',
-      '#4196ab',
-      '#45388f',
-      '#8f386c',
-      '#782929',
-      '#03b1fc',
-      '#acd69f'
-    ]
-
-    const madlibIds = Object.keys(madlibs)
-
-    const state = {
-      madlibIndex: 0,
-      colorIndex: 0
-    }
-
-    function setBgColor () {
-      const bodyEl = document.getElementById('body')
-      bodyEl.style.backgroundColor = colors[state.colorIndex++]
-    }
-
-    function getTitleElement (title) {
-      const titleEl = document.createElement('div')
-      titleEl.innerHTML = title
-      titleEl.id = 'madlib-title'
-      console.log(`--------------------- title:`, title)
-      return titleEl
-    }
-
-    function loadMadlibElement () {
-      setBgColor()
-      const formEl = document.getElementById('madlib')
-      const madlibId = madlibIds[state.madlibIndex]
-
-      while (formEl.firstChild) {
-        formEl.removeChild(formEl.firstChild)
-      }
-
-      const titleEl = getTitleElement(madlibId)
-      formEl.appendChild(titleEl)
-
-      const splitted = madlibs[madlibId]
-        .split(/_+/g)
-
-      for (let i = 0; i < splitted.length; i++) {
-        const textEl = document.createElement('span')
-        textEl.innerHTML = splitted[i]
-        formEl.appendChild(textEl)
-
-        if (i < splitted.length - 1) {
-          const inputEl = document.createElement('input')
-          inputEl.classList.add('madlib-input')
-          inputEl.name = String(i)
-          formEl.appendChild(inputEl)
-
-          if (i === 0) inputEl.focus()
-        }
-      }
-    }
-
-    loadMadlibElement()
-  </script>
   <style>
     #body {
       font-family: 'Lora', serif;
@@ -127,5 +38,141 @@
       border-bottom: 2px solid;
       border-color: #fff;
     }
+
+    .madlib-arrow {
+    	position: absolute;
+    	top: 50%;
+    	width: 3vmin;
+    	height: 3vmin;
+    	background: transparent;
+    	border-top: 1vmin solid white;
+    	border-right: 1vmin solid white;
+    	box-shadow: 0 0 0 lightgray;
+    	transition: all 200ms ease;
+    }
+
+  	#madlib-arrow-left {
+  		left: 0;
+  		transform: translate3d(0,-50%,0) rotate(-135deg);
+  	}
+
+  	#madlib-arrow-right {
+  		right: 0;
+  		transform: translate3d(0,-50%,0) rotate(45deg);
+  	}
+
+  	.madlib-arrow:hover {
+  		border-color: orange;
+  		box-shadow: 0.5vmin -0.5vmin 0 white;
+  	}
+
+  	.madlib-arrow:before { // for better hit area
+  		content: '';
+  		position: absolute;
+  		top: 50%;
+  		left: 50%;
+  		transform: translate(-40%,-60%) rotate(45deg);
+  		width: 200%;
+  		height: 200%;
+  	}
   </style>
+  <body id='body'>
+    <div>
+      <div class='madlib-arrow' id='madlib-arrow-left'></div>
+      <div id='madlib-title'></div>
+      <div class='madlib-arrow' id='madlib-arrow-right'></div>
+    </div>
+    <form id="madlib" action="https://formspree.io/xoqvggor" method="POST">
+      <input type="text" name="name">
+      <input type="email" name="_replyto">
+      <input type="submit" value="Send">
+    </form>
+  </body>
+  <script>
+    const madlibs = {
+      "A Total Mess": "There was ________________________ everywhere.  It was a nightmare.  I don’t know why ____________ even thought it was a good idea to bring _____________ in the first place.  I mean, my first thought was ___________________________ but after a few minutes, I noticed the ____________ wasn’t going to _________ the way we thought it would.  And that’s why you don’t bring _________ to a ___________________.",
+      "Never On Time": "Yeah, well if __________ had showed up on time for us to leave for the ____________ we wouldn’t have had to __________________ so many times on the way there.  I mean, it’s fine.  At least we got to talk about ______________ for a few hours while sitting in traffic.  All this time I had no idea that _________________ was so into _______________. By the time we got there I couldn’t stop thinking about all the times (s)he was probably _______________ while I  was sleeping.",
+      "My Friend is Ridiculous": "OMG, did you hear about how _______________ went to the ____________ and ______ with the ____________ for like an entire hour?  WTF is up with that?  Do you remember the last time s/he ________________________ with all those _____________?  This reminds me of that and I’ve been waiting to tell you for a week. If I didn't encounter a ____________ immediately after I found out, I would have come over that night with some __________ so we could gossip and _________________ before tweeting about it.",
+      "So Annoying": "With __________ , it’s always sort of a _____________ and I just can’t get over it. The past few days have been kind of ___________________ but the _________ is making it a little better.",
+      "Lost in Translation": "So the other day I sent a text to _____________ and instead of rainbows and sunshine, he/she responded all ____________ . It was kind of weird. Instead of letting it get to me, I put my shoes on and ____________________ . It helped for a little until I ran into a ________________ holding a _______________ and wielding it with fury."
+    }
+
+    const colors = [
+      '#f29191',
+      '#f2ab91',
+      '#fcb45b',
+      '#fcf8a4',
+      '#4196ab',
+      '#45388f',
+      '#8f386c',
+      '#782929',
+      '#03b1fc',
+      '#acd69f'
+    ]
+
+    const madlibIds = Object.keys(madlibs)
+
+    const state = {
+      madlibIndex: 0,
+      colorIndex: 0
+    }
+
+    function setBgColor () {
+      const bodyEl = document.getElementById('body')
+      bodyEl.style.backgroundColor = colors[state.colorIndex++]
+    }
+
+    function setLeftArrow () {
+      if (state.madlibIndex > 0) {
+        const el = document.getElementById('madlib-arrow-left')
+        el.style.display = 'initial'
+      }
+    }
+
+    function setRightArrow () {
+      if (state.madlibIndex < madlibIds.length - 1) {
+        const el = document.getElementById('madlib-arrow-right')
+        el.style.display = 'initial'
+      }
+    }
+
+    function setTitleElement (title) {
+      const titleEl = document.getElementById('madlib-title')
+      titleEl.innerHTML = title
+    }
+
+    function loadMadlibElement () {
+      setBgColor()
+      const formEl = document.getElementById('madlib')
+      const madlibId = madlibIds[state.madlibIndex]
+
+      while (formEl.firstChild) {
+        formEl.removeChild(formEl.firstChild)
+      }
+
+      setTitleElement(madlibId)
+      setLeftArrow()
+      setRightArrow()
+
+      const splitted = madlibs[madlibId]
+        .split(/_+/g)
+
+      for (let i = 0; i < splitted.length; i++) {
+        const textEl = document.createElement('span')
+        textEl.innerHTML = splitted[i]
+        formEl.appendChild(textEl)
+
+        if (i < splitted.length - 1) {
+          const inputEl = document.createElement('input')
+          inputEl.classList.add('madlib-input')
+          inputEl.name = String(i)
+          formEl.appendChild(inputEl)
+
+          if (i === 0) inputEl.focus()
+        }
+      }
+    }
+
+    loadMadlibElement()
+  </script>
 </html>
