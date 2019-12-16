@@ -100,6 +100,9 @@
       <input type="email" name="_replyto">
       <input type="submit" value="Send">
     </form>
+    <div>
+      
+    </div>
   </body>
   <script>
     const madlibs = {
@@ -158,6 +161,22 @@
       titleEl.innerHTML = title
     }
 
+    function checkIfAllMadlibBlanksAreFilled () {
+      const els = document.getElementsByClassName('madlib-input')
+      for (let i = 0; i < els.length; i++) {
+        if (!els[i].value) return false
+      }
+
+      return true
+    }
+
+    function updateMadlibSubmissionButton () {
+      if (!checkIfAllMadlibBlanksAreFilled()) {
+        return
+      }
+      console.log('show')
+    }
+
     function loadMadlibElement () {
       setBgColor()
       const formEl = document.getElementById('madlib')
@@ -181,6 +200,9 @@
 
         if (i < splitted.length - 1) {
           const inputEl = document.createElement('input')
+          inputEl.addEventListener('input', updateMadlibSubmissionButton)
+          inputEl.addEventListener('keydown', updateMadlibSubmissionButton)
+          inputEl.addEventListener('paste', updateMadlibSubmissionButton)
           inputEl.classList.add('madlib-input')
           inputEl.name = String(i)
           formEl.appendChild(inputEl)
