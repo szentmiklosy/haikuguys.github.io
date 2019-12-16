@@ -6,10 +6,13 @@
       font-family: 'Lora', serif;
     }
 
-    #madlib {
+    .centered {
       width: 800px;
+      margin: 0 auto;
+    }
+
+    #madlib {
       line-height: 2.5em;
-      margin: 200px auto;
     }
 
     #madlib > * {
@@ -17,9 +20,16 @@
       color: #fff;
     }
 
+    #madlib-header {
+      margin-top: 150px;
+      /* position: relative; */
+    }
+
     #madlib-title {
       font-size: 3em;
       line-height: 2em;
+      color: #111;
+      font-style: italic;
     }
 
     .madlib-input {
@@ -40,6 +50,7 @@
     }
 
     .madlib-arrow {
+      cursor: pointer;
     	position: absolute;
     	top: 50%;
     	width: 3vmin;
@@ -52,17 +63,19 @@
     }
 
   	#madlib-arrow-left {
-  		left: 0;
+  		left: 30px;
+  		/* left: -40px; */
   		transform: translate3d(0,-50%,0) rotate(-135deg);
   	}
 
   	#madlib-arrow-right {
-  		right: 0;
+  		right: 30px;
+  		/* right: -40px; */
   		transform: translate3d(0,-50%,0) rotate(45deg);
   	}
 
   	.madlib-arrow:hover {
-  		border-color: orange;
+  		border-color: #ccc;
   		box-shadow: 0.5vmin -0.5vmin 0 white;
   	}
 
@@ -77,12 +90,12 @@
   	}
   </style>
   <body id='body'>
-    <div>
-      <div class='madlib-arrow' id='madlib-arrow-left'></div>
-      <div id='madlib-title'></div>
-      <div class='madlib-arrow' id='madlib-arrow-right'></div>
+    <div id='madlib-header' class='centered'>
+      <div class='madlib-arrow' id='madlib-arrow-left' onclick="goToPreviousMadlib()"></div>
+      <span id='madlib-title'></span>
+      <div class='madlib-arrow' id='madlib-arrow-right' onclick="goToNextMadlib()"></div>
     </div>
-    <form id="madlib" action="https://formspree.io/xoqvggor" method="POST">
+    <form id="madlib" class='centered' action="https://formspree.io/xoqvggor" method="POST">
       <input type="text" name="name">
       <input type="email" name="_replyto">
       <input type="submit" value="Send">
@@ -101,7 +114,6 @@
       '#f29191',
       '#f2ab91',
       '#fcb45b',
-      '#fcf8a4',
       '#4196ab',
       '#45388f',
       '#8f386c',
@@ -113,27 +125,32 @@
     const madlibIds = Object.keys(madlibs)
 
     const state = {
-      madlibIndex: 0,
-      colorIndex: 0
+      madlibIndex: 0
+    }
+
+    function goToPreviousMadlib () {
+      state.madlibIndex--
+      loadMadlibElement()
+    }
+
+    function goToNextMadlib () {
+      state.madlibIndex++
+      loadMadlibElement()
     }
 
     function setBgColor () {
       const bodyEl = document.getElementById('body')
-      bodyEl.style.backgroundColor = colors[state.colorIndex++]
+      bodyEl.style.backgroundColor = colors[state.madlibIndex % colors.length]
     }
 
     function setLeftArrow () {
-      if (state.madlibIndex > 0) {
-        const el = document.getElementById('madlib-arrow-left')
-        el.style.display = 'initial'
-      }
+      const el = document.getElementById('madlib-arrow-left')
+      el.style.display = state.madlibIndex > 0 ? 'initial' : 'none'
     }
 
     function setRightArrow () {
-      if (state.madlibIndex < madlibIds.length - 1) {
-        const el = document.getElementById('madlib-arrow-right')
-        el.style.display = 'initial'
-      }
+      const el = document.getElementById('madlib-arrow-right')
+      el.style.display = state.madlibIndex < madlibIds.length - 1 ? 'initial' : 'none'
     }
 
     function setTitleElement (title) {
