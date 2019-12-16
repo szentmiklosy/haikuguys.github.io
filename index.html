@@ -90,21 +90,43 @@
   	}
   </style>
   <body id='body'>
-    <div id='madlib-header' class='centered'>
+    <div class='centered page-0'>
+      <div>
+        How does it work?
+        <button onclick="setPageIndex(1)">Try it now</button>
+      </div>
+    </div>
+    <div id='madlib-header' class='centered page-1'>
       <div class='madlib-arrow' id='madlib-arrow-left' onclick="goToPreviousMadlib()"></div>
       <span id='madlib-title'></span>
       <div class='madlib-arrow' id='madlib-arrow-right' onclick="goToNextMadlib()"></div>
     </div>
-    <form id="madlib" class='centered' action="https://formspree.io/xoqvggor" method="POST">
-      <input type="text" name="name">
-      <input type="email" name="_replyto">
-      <input type="submit" value="Send">
-    </form>
+    <form id="madlib" class='centered page-1' action="https://formspree.io/xoqvggor" method="POST"></form>
     <div>
-      
+
     </div>
   </body>
   <script>
+    const PAGE_COUNT = 2
+    const state = {
+      madlibIndex: 0,
+      pageIndex: 0
+    }
+
+    // routing
+
+    function setPageIndex (newPageIndex) {
+      state.pageIndex = newPageIndex
+      for (let i = 0; i < PAGE_COUNT; i++) {
+        const els = document.getElementsByClassName(`page-${i}`)
+        for (let j = 0; j < els.length; j++) {
+          els[j].style.display = i === state.pageIndex ? 'block' : 'none'
+        }
+      }
+    }
+
+    // madlib form
+
     const madlibs = {
       "A Total Mess": "There was ________________________ everywhere.  It was a nightmare.  I don’t know why ____________ even thought it was a good idea to bring _____________ in the first place.  I mean, my first thought was ___________________________ but after a few minutes, I noticed the ____________ wasn’t going to _________ the way we thought it would.  And that’s why you don’t bring _________ to a ___________________.",
       "Never On Time": "Yeah, well if __________ had showed up on time for us to leave for the ____________ we wouldn’t have had to __________________ so many times on the way there.  I mean, it’s fine.  At least we got to talk about ______________ for a few hours while sitting in traffic.  All this time I had no idea that _________________ was so into _______________. By the time we got there I couldn’t stop thinking about all the times (s)he was probably _______________ while I  was sleeping.",
@@ -126,10 +148,6 @@
     ]
 
     const madlibIds = Object.keys(madlibs)
-
-    const state = {
-      madlibIndex: 0
-    }
 
     function goToPreviousMadlib () {
       state.madlibIndex--
@@ -213,5 +231,6 @@
     }
 
     loadMadlibElement()
+    setPageIndex(1)
   </script>
 </html>
