@@ -1,9 +1,23 @@
 <!DOCTYPE html>
 <html>
+  <script src="https://js.stripe.com/v3/"></script>
   <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
   <style>
-    #body {
+    html {
+      scroll-behavior: smooth;
+    }
+
+    * {
       font-family: 'Lora', serif;
+      color: #fff;
+    }
+
+    #body {
+      scroll-snap-type: y mandatory;
+    }
+
+    body > {
+      scroll-snap-align: start;
     }
 
     .centered {
@@ -17,24 +31,26 @@
 
     #madlib-container > * {
       font-size: 1.2em;
-      color: #fff;
+    }
+
+    .form-divider {
+      height: 100px;
     }
 
     #madlib-header {
-      margin-top: 100px;
+      padding-top: 100px;
     }
 
-    #madlib-title {
-      font-size: 3em;
+    .title {
+      font-size: 3em !important;
       line-height: 2em;
       color: #111;
       font-style: italic;
     }
 
-    .madlib-input {
-      font-family: 'Lora', serif;
+    .form-input {
       font-size: 1em;
-      color: #fff;
+      color: #000;
 
       outline: none;
       border-top: none;
@@ -46,7 +62,7 @@
       caret-color: #fff;
     }
 
-    .madlib-input:focus {
+    .form-input:focus {
       border-bottom: 2px solid;
       border-color: #fff;
     }
@@ -96,9 +112,61 @@
       line-height: 2em;
     }
 
-    .madlib-from-to-label {
-      width: 60px;
+    .form-label {
+      width: 160px;
+      text-align: right;
+      padding-right: 10px;
       display: inline-block;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: row;
+    }
+
+    .button {
+      height: fit-content;
+      cursor: pointer;
+      padding: 10px 20px;
+      border: 2px solid #fff;
+      background-color: transparent;
+      font-size: 1em;
+    }
+
+    .disabled {
+      cursor: default !important;
+      border: 2px dashed #fff !important;
+    }
+
+    .checkbox-container {
+      line-height: 3em;
+      padding-left: 8.4em;
+    }
+
+    .action-options {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .action-option-container {
+      flex: 1;
+    }
+
+    .action-option {
+      cursor: pointer;
+      margin: 10px;
+      padding: 10px;
+      border: 2px solid #fff;
+      height: 400px;
+    }
+
+    .action-option:hover {
+      border: 2px dashed #fff;
+    }
+
+    .InputElement {
+      border-bottom: 3px dashed #fff;
     }
   </style>
   <body id='body'>
@@ -108,28 +176,130 @@
         <button onclick="setPageIndex(1)">Try it now</button>
       </div>
     </div>
-    <div id='madlib-header' class='centered page-1'>
+    <div id='madlib-header' class='centered page-1 form-0'>
       <div class='madlib-arrow' id='madlib-arrow-left' onclick="goToPreviousMadlib()"></div>
-      <span id='madlib-title'></span>
+      <span id='madlib-title' class='title'></span>
       <div class='madlib-arrow' id='madlib-arrow-right' onclick="goToNextMadlib()"></div>
     </div>
-    <form id="madlib-container" class='centered page-1' action="https://formspree.io/xoqvggor" method="POST">
-      <div id="madlib"></div>
-      <div class='madlib-from-to'>
-        <div><div class='madlib-from-to-label'>From:</div><input class='madlib-input' /></div>
-        <div><div class='madlib-from-to-label'>To:</div><input class='madlib-input' /></div>
+    <div id="madlib-container" class='centered page-1'>
+      <div id="madlib" class="form-0"></div>
+      <div class='madlib-from-to form-0'>
+        <div class='madlib-label'>Written By:</div>
+        <input onchange="updateFormNextButton()" onkeyup="updateFormNextButton()" onpaste="updateFormNextButton()" name='author_nickname' class='madlib-input form-input' />
+      </div>
+      <div class='form-divider form-0'></div>
+      <h1 class='title form-1'>Tell us about yourselves!</h1>
+      <div class='form-1'>
+        <h2>Your</h2>
+        <div>
+          <label class='form-label'>first</label>
+          <input class='form-input user-info-input' name="author_firstname" onchange="updateFormNextButton()" onkeyup="updateFormNextButton()" onpaste="updateFormNextButton()" />
+        </div>
+        <div>
+          <label class='form-label'>last</label>
+          <input class='form-input user-info-input' name="author_lastname" onchange="updateFormNextButton()" onkeyup="updateFormNextButton()" onpaste="updateFormNextButton()" />
+        </div>
+        <div>
+          <label class='form-label'>email</label>
+          <input class='form-input user-info-input' name="author_email" onchange="updateFormNextButton()" onkeyup="updateFormNextButton()" onpaste="updateFormNextButton()" />
+        </div>
+        <div class='checkbox-container'>
+          <label>enroll to our email list?</label>
+          <input type='checkbox' name='email_list' />
+        </div>
+        <h2>Their</h2>
+        <div>
+          <label class='form-label'>first</label>
+          <input class='form-input user-info-input' name="recipeint_firstname" onchange="updateFormNextButton()" onkeyup="updateFormNextButton()" onpaste="updateFormNextButton()" />
+        </div>
+        <div>
+          <label class='form-label'>last</label>
+          <input class='form-input user-info-input' name="recipeint_lastname" onchange="updateFormNextButton()" onkeyup="updateFormNextButton()" onpaste="updateFormNextButton()" />
+        </div>
+        <div>
+          <label class='form-label'>email</label>
+          <input class='form-input user-info-input' name="recipient_email" onchange="updateFormNextButton()" onkeyup="updateFormNextButton()" onpaste="updateFormNextButton()" />
+        </div>
+      </div>
+      <div class='form-divider form-1'></div>
+      <div class='form-2'>
+        <h1 class='title'>What next?</h1>
+        <div class='action-options'>
+          <div class='action-option-container'>
+            <div class='action-option form-next-button'>
+              <h1>Send me an email with my madlib</h1>
+              <h2>Free</h2>
+              <p>
+                (Email will contain option to purchase at LibBlib at a later date.)
+              </p>
+            </div>
+          </div>
+          <div class='action-option-container'>
+            <div class='action-option form-next-button' onclick="goToNextFormSlide(this)">
+              <h1>Send my friend a LibBlib by snail mail</h1>
+              <h2>$15</h2>
+              <p>
+                A LibBlib is a customized, hand-drawn artwork to accompany your madlib. Want to see examples? <a onclick="(e) => e.stopPropagation()" target="_blank" href='#'>Click here.</a> Don't worry, we won't close this page.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class='form-divider'></div>
+      </div>
+      <h1 class='title form-3'>Final step</h1>
+      <div class='form-3'>
+        <h2>Shipping</h2>
+        <div>
+          <label class='form-label'>Addressee name</label>
+          <input class='form-input user-delivery-input' name="shipping_addressee" onchange="updateFormNextButton()" onkeyup="updateFormNextButton()" onpaste="updateFormNextButton()" />
+        </div>
+        <div>
+          <label class='form-label'>Address</label>
+          <input class='form-input user-delivery-input' name="shipping_address" onchange="updateFormNextButton()" onkeyup="updateFormNextButton()" onpaste="updateFormNextButton()" />
+        </div>
+        <div>
+          <label class='form-label'>City</label>
+          <input class='form-input user-delivery-input' name="shipping_city" onchange="updateFormNextButton()" onkeyup="updateFormNextButton()" onpaste="updateFormNextButton()" />
+        </div>
+        <div>
+          <label class='form-label'>State</label>
+          <input class='form-input user-delivery-input' name="shipping_state" onchange="updateFormNextButton()" onkeyup="updateFormNextButton()" onpaste="updateFormNextButton()" />
+        </div>
+        <div>
+          <label class='form-label'>ZIP</label>
+          <input class='form-input user-delivery-input' name="shipping_zip" onchange="updateFormNextButton()" onkeyup="updateFormNextButton()" onpaste="updateFormNextButton()" />
+        </div>
+        <h2>Billing</h2>
+        <label for="card-element">Credit or debit card</label>
+        <div id="card-element">
+          <!-- A Stripe Element will be inserted here. -->
+        </div>
+
+        <!-- Used to display form errors. -->
+        <div id="card-errors" role="alert"></div>
+
+        <div class='button-container'>
+          <button class='button form-submit-button' onclick="submitPayment(this)">Submit</button>
+          <br />
+          <div class='form-divider'></div>
+        </div>
+      </div>
+      <div id='form-next-button-container' class='button-container'>
+        <button class='button form-next-button' onclick="goToNextFormSlide(this)">Next</button>
+        <br />
+        <div class='form-divider'></div>
       </div>
     </div>
-    </form>
-    <div>
-
-    </div>
+    <form id='payment-form'></form>
   </body>
   <script>
     const PAGE_COUNT = 2
+    const FORM_PARTS_COUNT = 4
+    const FORM_INDEX_TO_HIDE_NEXT_BUTTON = [2, 3]
     const state = {
       madlibIndex: 0,
-      pageIndex: 0
+      pageIndex: 0,
+      formIndex: 0
     }
 
     // routing
@@ -144,10 +314,30 @@
       }
     }
 
+    function goToNextFormSlide (el) {
+      if (el.classList.contains('disabled')) return
+      setFormIndex(++state.formIndex)
+    }
+
+    function setFormIndex (newFormIndex) {
+      state.formIndex = newFormIndex
+      for (let i = 0; i < FORM_PARTS_COUNT; i++) {
+        const els = document.getElementsByClassName(`form-${i}`)
+        for (let j = 0; j < els.length; j++) {
+          els[j].style.display = i <= state.formIndex ? 'block' : 'none'
+          if (i === state.formIndex) {
+            els[0].scrollIntoView()
+          }
+        }
+      }
+
+      updateFormNextButton()
+    }
+
     // madlib form
 
     const madlibs = {
-      "A Total Mess": "There was ________________________ everywhere.  It was a nightmare.  I don’t know why ____________ even thought it was a good idea to bring _____________ in the first place.  I mean, my first thought was ___________________________ but after a few minutes, I noticed the ____________ wasn’t going to _________ the way we thought it would.  And that’s why you don’t bring _________ to a ___________________.",
+      "A Total Mess": "There was ________________________ everywhere.  It was a nightmare.  I don’t know why _________ even thought it was a good idea to bring _____________ in the first place.  I mean, my first thought was ___________________________ but after a few minutes, I noticed the ____________ wasn’t going to _________ the way we thought it would.  And that’s why you don’t bring _________ to a ___________________.",
       "Never On Time": "Yeah, well if __________ had showed up on time for us to leave for the ____________ we wouldn’t have had to __________________ so many times on the way there.  I mean, it’s fine.  At least we got to talk about ______________ for a few hours while sitting in traffic.  All this time I had no idea that _________________ was so into _______________. By the time we got there I couldn’t stop thinking about all the times (s)he was probably _______________ while I  was sleeping.",
       "My Friend is Ridiculous": "OMG, did you hear about how _______________ went to the ____________ and ______ with the ____________ for like an entire hour?  WTF is up with that?  Do you remember the last time s/he ________________________ with all those _____________?  This reminds me of that and I’ve been waiting to tell you for a week. If I didn't encounter a ____________ immediately after I found out, I would have come over that night with some __________ so we could gossip and _________________ before tweeting about it.",
       "So Annoying": "With __________ , it’s always sort of a _____________ and I just can’t get over it. The past few days have been kind of ___________________ but the _________ is making it a little better.",
@@ -155,11 +345,11 @@
     }
 
     const colors = [
+      '#45388f',
       '#f29191',
       '#f2ab91',
       '#fcb45b',
       '#4196ab',
-      '#45388f',
       '#8f386c',
       '#782929',
       '#03b1fc',
@@ -171,11 +361,13 @@
     function goToPreviousMadlib () {
       state.madlibIndex--
       loadMadlibElement()
+      setFormIndex(0)
     }
 
     function goToNextMadlib () {
       state.madlibIndex++
       loadMadlibElement()
+      setFormIndex(0)
     }
 
     function setBgColor () {
@@ -185,13 +377,11 @@
 
     function setLeftArrow () {
       const el = document.getElementById('madlib-arrow-left')
-      console.log(`--------------------- el left:`, el)
       el.style.display = state.madlibIndex > 0 ? 'initial' : 'none'
     }
 
     function setRightArrow () {
       const el = document.getElementById('madlib-arrow-right')
-      console.log(`--------------------- el right:`, el)
       el.style.display = state.madlibIndex < madlibIds.length - 1 ? 'initial' : 'none'
     }
 
@@ -200,8 +390,8 @@
       titleEl.innerHTML = title
     }
 
-    function checkIfAllMadlibBlanksAreFilled () {
-      const els = document.getElementsByClassName('madlib-input')
+    function checkIfAllClassBlanksAreFilled (className) {
+      const els = document.getElementsByClassName(className)
       for (let i = 0; i < els.length; i++) {
         if (!els[i].value) return false
       }
@@ -209,11 +399,35 @@
       return true
     }
 
-    function updateMadlibSubmissionButton () {
-      if (!checkIfAllMadlibBlanksAreFilled()) {
-        return
+    function setNextButtonsDisabled (disabled) {
+      const buttons = document.getElementsByClassName('form-next-button')
+      for (let i = 0; i < buttons.length; i++) {
+        // buttons[i].classList['remove']('disabled') // TODO: REVERT THIS!
+        buttons[i].classList[disabled ? 'add' : 'remove']('disabled') // TODO: REVERT THIS!
       }
-      console.log('show')
+    }
+
+    function updateFormNextButton () {
+      const buttons = document.getElementsByClassName('form-next-button')
+
+      setNextButtonsDisabled(false)
+
+      if (!checkIfAllClassBlanksAreFilled('madlib-input')) {
+        console.log(1)
+        setNextButtonsDisabled(true)
+      }
+
+      if (state.formIndex > 0) {
+        if (!checkIfAllClassBlanksAreFilled('user-info-input')) {
+          console.log(2)
+          setNextButtonsDisabled(true)
+        }
+      }
+
+      document.getElementById('form-next-button-container').style.display =
+        FORM_INDEX_TO_HIDE_NEXT_BUTTON.includes(state.formIndex)
+          ? 'none'
+          : 'flex'
     }
 
     function loadMadlibElement () {
@@ -239,19 +453,115 @@
 
         if (i < splitted.length - 1) {
           const inputEl = document.createElement('input')
-          inputEl.addEventListener('input', updateMadlibSubmissionButton)
-          inputEl.addEventListener('keydown', updateMadlibSubmissionButton)
-          inputEl.addEventListener('paste', updateMadlibSubmissionButton)
+          inputEl.addEventListener('input', updateFormNextButton)
+          inputEl.addEventListener('keyup', updateFormNextButton)
+          inputEl.addEventListener('paste', updateFormNextButton)
           inputEl.classList.add('madlib-input')
+          inputEl.classList.add('form-input')
           inputEl.name = String(i)
           formEl.appendChild(inputEl)
 
           if (i === 0) inputEl.focus()
         }
       }
+
+      formEl.addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        console.log(`--------------------- ev:`, ev)
+        // const data = new FormData(formEl);
+        // ajax('POST', 'https://formspree.io/xoqvggor', data, success, error);
+      })
+
+      updateFormNextButton()
     }
 
+    function ajax (method, url, data, success, error) {
+      const xhr = new XMLHttpRequest()
+      xhr.open(method, url)
+      xhr.setRequestHeader("Accept", "application/json")
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState !== XMLHttpRequest.DONE) return
+        if (xhr.status === 200) {
+          success(xhr.response, xhr.responseType)
+        } else {
+          error(xhr.status, xhr.response, xhr.responseType)
+        }
+      }
+      xhr.send(data)
+    }
+
+    setFormIndex(2)
     setPageIndex(1)
     loadMadlibElement()
+
+    // helpers
+
+    // function isAnyPartOfElementInViewport (el) {
+    //   const rect = el.getBoundingClientRect()
+    //   // DOMRect { x: 8, y: 8, width: 100, height: 100, top: 8, right: 108, bottom: 108, left: 8 }
+    //   const windowHeight = (window.innerHeight || document.documentElement.clientHeight)
+    //   const windowWidth = (window.innerWidth || document.documentElement.clientWidth)
+    //
+    //   // http://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
+    //   const vertInView = (rect.top <= windowHeight) && ((rect.top + rect.height) >= 0)
+    //   const horInView = (rect.left <= windowWidth) && ((rect.left + rect.width) >= 0)
+    //
+    //   return (vertInView && horInView)
+    // }
+
+    // stripe
+
+    var stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY');
+    var elements = stripe.elements();
+
+    // Create an instance of the card Element.
+    var card = elements.create('card', {
+      style: {
+        base: {
+          color: '#fff',
+          fontFamily: 'Lora, sans-serif',
+          fontSize: '1em',
+        }
+      }
+    });
+
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+
+    // Handle real-time validation errors from the card Element.
+    card.addEventListener('change', function(event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    function submitPayment () {
+      stripe.createToken(card).then(function(result) {
+        if (result.error) {
+          // Inform the user if there was an error.
+          const errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+        } else {
+          // Send the token to your server.
+          stripeTokenHandler(result.token);
+        }
+      });
+    }
+
+    // Submit the form with the token ID.
+    function stripeTokenHandler(token) {
+      // Insert the token ID into the form so it gets submitted to the server
+      const form = document.getElementById('payment-form');
+      const hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', '_stripe_token');  // <-- important
+      hiddenInput.setAttribute('value', token.id);
+      form.appendChild(hiddenInput);
+      // Submit the form
+      form.submit();
+    }
   </script>
 </html>
