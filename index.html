@@ -444,7 +444,11 @@
       setRightArrow()
 
       const splitted = madlibs[madlibId]
-        .split(/_+/g)
+        .split(/<.*?>/g)
+
+      const placeholders = madlibs[madlibId]
+        .match(/<(.*?)>/g)
+        .map(s => s.substr(1).replace(/>$/, ''))
 
       for (let i = 0; i < splitted.length; i++) {
         const textEl = document.createElement('span')
@@ -459,6 +463,7 @@
           inputEl.classList.add('madlib-input')
           inputEl.classList.add('form-input')
           inputEl.name = String(i)
+          inputEl.placeholder = placeholders[i]
           formEl.appendChild(inputEl)
 
           if (i === 0) inputEl.focus()
